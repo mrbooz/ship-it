@@ -72,7 +72,7 @@ export class Game {
     this.aimPreview = null;
     this.state = "moving";
     this.audio.putt(power);
-    this.emit("shot", { power });
+    this.emit("shot", { power, dirX, dirY });
   }
 
   // --- Simulation -----------------------------------------------------

@@ -65,8 +65,9 @@ game.on("holeLoaded", (hole) => {
   syncHud();
 });
 
-game.on("shot", ({ power }) => {
+game.on("shot", ({ power, dirX, dirY }) => {
   syncHud();
+  renderer.startSwing(dirX, dirY, power);
   if (power >= MEGA_SHOT_POWER) {
     popPopup("💥 MEGA COMMIT");
     renderer.spawnParticles(game.ball.pos, "#ffd166", 20);

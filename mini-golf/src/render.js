@@ -14,8 +14,9 @@ const COLORS = {
   mainRing: "#2ecc9c",
   ball: "#e8f3ee",
   ballShadow: "rgba(0,0,0,0.35)",
-  aimLine: "rgba(232, 243, 238, 0.55)",
   label: "rgba(232, 243, 238, 0.55)",
+  club: "#c9a876",
+  clubHead: "#e8f3ee",
 };
 
 export class Renderer {
@@ -82,6 +83,7 @@ export class Renderer {
   }
 
   updateParticles(dt) {
+    this._lastDt = dt;
     for (const p of this.particles) {
       p.age += dt;
       p.x += p.vx * dt;
@@ -117,8 +119,8 @@ export class Renderer {
     this._drawWalls(hole, mechState);
     this._updateTrail(ball);
     this._drawTrail();
-    this._drawBall(ball, aimScreen);
-    if (aimScreen) this._drawAimWorld(ball, aimScreen);
+    this._drawClub(ball, aimScreen);
+    this._drawBall(ball);
     this._drawDecorations(hole.decorations);
 
     ctx.restore();
@@ -200,29 +202,79 @@ export class Renderer {
     ctx.stroke();
   }
 
-  _drawBall(ball, aim) {
+  _drawBall(ball) {
     const { ctx } = this;
     ctx.fillStyle = COLORS.ballShadow;
     ctx.beginPath();
     ctx.ellipse(ball.x, ball.y + ball.radius * 0.6, ball.radius * 0.9, ball.radius * 0.4, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.save();
-    ctx.translate(ball.x, ball.y);
-    if (aim) {
-      // Stretch backward along the pull direction while charging a shot —
-      // a bigger, more dramatic pull for a harder hit reads as "loaded."
-      const stretch = 1 + Math.min(aim.power, 1.6) * 0.35;
-      const angle = Math.atan2(-aim.dirY, -aim.dirX);
-      ctx.rotate(angle);
-      ctx.scale(stretch, 1 / stretch);
-      ctx.rotate(-angle);
-    }
     ctx.fillStyle = COLORS.ball;
     ctx.beginPath();
-    ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fill();
-    ctx.restore();
+  }
+
+  /** Called once per shot (from main.js on the "shot" event) to kick off the swing animation. */
+  startSwing(dirX, dirY, power) {
+    this.swing = { dirX, dirY, power, t: 0, duration: 0.16 };
+  }
+
+  /**
+   * The club: pulled back opposite the aim direction while charging
+   * (further back for more power), then swings through to the ball in a
+   * quick animation right after the shot is taken — the actual moment of
+   * impact, not just an abstract arrow.
+   */
+  _drawClub(ball, aim) {
+    const { ctx } = this;
+    const pullBackWorld = 22; // distance behind the ball at rest/full pull
+    let dirX, dirY, reach;
+
+    if (this.swing && this.swing.t < this.swing.duration) {
+      const s = this.swing;
+      s.t += this._lastDt || 0;
+      // Ease from fully pulled back, through the ball, to a short
+      // follow-through — this is the "hit" itself, not a preview.
+      const progress = Math.min(1, s.t / s.duration);
+      const eased = progress * progress; // accelerate into the ball, like a real swing
+      const pull = pullBackWorld * (1 + s.power * 0.5);
+      reach = pull - (pull + 14) * eased;
+      dirX = s.dirX;
+      dirY = s.dirY;
+      if (progress >= 1) this.swing = null;
+    } else if (aim) {
+      const pull = pullBackWorld * (1 + Math.min(aim.power, 1.6) * 0.7);
+      reach = pull;
+      dirX = aim.dirX;
+      dirY = aim.dirY;
+    } else {
+      return;
+    }
+
+    // Head end sits `reach` behind the ball along -dir; shaft trails further back.
+    const headX = ball.x + dirX * reach;
+    const headY = ball.y + dirY * reach;
+    const shaftX = ball.x + dirX * (reach + 30);
+    const shaftY = ball.y + dirY * (reach + 30);
+
+    ctx.strokeStyle = COLORS.club;
+    ctx.lineWidth = 3 / this.scale;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(shaftX, shaftY);
+    ctx.lineTo(headX, headY);
+    ctx.stroke();
+
+    // Clubhead: a short perpendicular cap.
+    const perpX = -dirY;
+    const perpY = dirX;
+    ctx.strokeStyle = COLORS.clubHead;
+    ctx.lineWidth = 5 / this.scale;
+    ctx.beginPath();
+    ctx.moveTo(headX + perpX * 6, headY + perpY * 6);
+    ctx.lineTo(headX - perpX * 6, headY - perpY * 6);
+    ctx.stroke();
   }
 
   _updateTrail(ball) {
@@ -248,22 +300,6 @@ export class Renderer {
       ctx.fill();
     }
     ctx.globalAlpha = 1;
-  }
-
-  /** aimScreen carries the drag vector already in world units (dx,dy) plus power. */
-  _drawAimWorld(ball, aim) {
-    const { ctx } = this;
-    const len = 40 + aim.power * 60;
-    const x2 = ball.x + aim.dirX * len;
-    const y2 = ball.y + aim.dirY * len;
-    ctx.strokeStyle = COLORS.aimLine;
-    ctx.lineWidth = 2 / this.scale;
-    ctx.setLineDash([6 / this.scale, 6 / this.scale]);
-    ctx.beginPath();
-    ctx.moveTo(ball.x, ball.y);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-    ctx.setLineDash([]);
   }
 
   _drawDecorations(decorations) {
