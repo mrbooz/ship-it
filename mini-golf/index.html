@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MERGE CONFLICT MINI GOLF — Get your commit into main.</title>
+  <meta name="description" content="A developer mini-golf game. Get your commit into main while your AI agent works." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="stage" id="stage">
+      <canvas id="course" aria-hidden="true"></canvas>
+
+      <div class="hud" aria-hidden="true">
+        <div class="hud-brand">⛳ MINI GOLF</div>
+        <div class="hud-stats">
+          <div class="stat"><span class="stat-label">HOLE</span><span class="stat-value" id="stat-hole">1/9</span></div>
+          <div class="stat"><span class="stat-label">PAR</span><span class="stat-value" id="stat-par">2</span></div>
+          <div class="stat"><span class="stat-label">STROKES</span><span class="stat-value" id="stat-strokes">0</span></div>
+        </div>
+      </div>
+
+      <div class="hole-name" id="hole-name" aria-hidden="true">HELLO WORLD</div>
+      <div class="popup" id="popup" aria-hidden="true"></div>
+      <div class="power-meter" id="power-meter" aria-hidden="true" hidden>
+        <div class="power-fill" id="power-fill"></div>
+        <div class="power-mega-mark"></div>
+      </div>
+
+      <section class="screen screen-ready" id="screen-ready">
+        <h1 class="title">MERGE CONFLICT<br />MINI GOLF ⛳</h1>
+        <p class="tagline">Get your commit into main.</p>
+        <p class="prompt">Drag back from the ball, release to putt</p>
+        <button class="primary-btn" id="start-btn" type="button">START ROUND</button>
+      </section>
+
+      <section class="screen screen-hole-result" id="screen-hole-result" hidden>
+        <p class="hr-hole-name" id="hr-hole-name">HELLO WORLD</p>
+        <h1 class="hr-label" id="hr-label">CLEAN COMMIT</h1>
+        <p class="hr-detail" id="hr-detail">PAR 2 · 2 STROKES</p>
+        <button class="primary-btn" id="continue-btn" type="button">CONTINUE</button>
+      </section>
+
+      <section class="screen screen-round-complete" id="screen-round-complete" hidden>
+        <h1 class="title">ROUND COMPLETE</h1>
+        <p class="rc-score" id="rc-score">27 <span class="rc-relative">(-3)</span></p>
+        <p class="rc-label" id="rc-label">CLEAN CODE</p>
+        <p class="rc-best" id="rc-best" hidden>★ NEW BEST ROUND</p>
+        <div class="scorecard" id="scorecard"></div>
+        <button class="primary-btn" id="play-again-btn" type="button">PLAY AGAIN</button>
+      </section>
+
+      <a class="arcade-btn" href="../arcade/" aria-label="Back to arcade">🕹️</a>
+      <button class="mute-btn" id="mute-btn" type="button" aria-pressed="false" aria-label="Toggle sound">🔊</button>
+
+      <div class="sr-only" role="status" aria-live="polite" id="sr-status"></div>
+    </div>
+    <p class="footer-note">Get your commit into main. No account, no tracking, no network calls — local records only.</p>
+  </main>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,17 +1,18 @@
 {
   "name": "ship-it",
-  "version": "1.0.0+codex.20260916011137",
-  "description": "SHIP IT \u2014 a tiny one-button developer arcade game to play while Codex works. Your agent codes. You survive production.",
+  "version": "1.1.0+codex.20260916011137",
+  "description": "A tiny arcade: SHIP IT (one-button developer runner) and MERGE CONFLICT MINI GOLF (developer mini golf) to play while Codex works.",
   "author": {
     "name": "Alexander Bouzi"
   },
-  "homepage": "https://ship-it-prod-2026.web.app",
+  "homepage": "https://ship-it-prod-2026.web.app/arcade/",
   "repository": "https://github.com/mrbooz/ship-it",
   "license": "MIT",
   "keywords": [
     "game",
     "arcade",
     "endless runner",
+    "mini golf",
     "break",
     "waiting",
     "one-button"
@@ -19,8 +20,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Ship It",
-    "shortDescription": "A tiny arcade game for while Codex works",
-    "longDescription": "SHIP IT is a one-button endless runner themed around shipping software: jump BUG, 404, MERGE CONFLICT and other developer disasters, chain PERFECT jumps into FLOW STATE, and rack up deployments. Meant to be opened for a couple of minutes while a longer Codex task runs, then closed again. Runs entirely in the browser at ship-it-prod-2026.web.app; local high score is stored on your device, and the global leaderboard is public (no account needed).",
+    "shortDescription": "A tiny arcade for while Codex works",
+    "longDescription": "Two developer games in one arcade, meant to be opened for a couple of minutes while a longer Codex task runs, then closed again. SHIP IT is a one-button endless runner: jump BUG, 404, MERGE CONFLICT and other developer disasters, chain PERFECT jumps into FLOW STATE, and rack up deployments — with a public global leaderboard. MERGE CONFLICT MINI GOLF is developer mini golf: nine handcrafted holes built from real dev concepts (BUG bumpers, 404 portals, CORS barriers, REBASE geometry, ROLLBACK and CACHE hazards) — get your commit into main. Both run entirely in the browser with no account needed; local high scores are stored on your device.",
     "developerName": "Alexander Bouzi",
     "category": "Games",
     "capabilities": [
@@ -30,8 +31,8 @@
     "composerIcon": "./assets/logo.svg",
     "logo": "./assets/logo.svg",
     "defaultPrompt": [
-      "Open SHIP IT so I can play while you work",
-      "Launch the SHIP IT arcade game",
+      "Open the arcade so I can play while you work",
+      "Launch MERGE CONFLICT MINI GOLF",
       "Give me the SHIP IT link"
     ]
   }

@@ -10,10 +10,12 @@
       "**/.*/**",
       "**/node_modules/**",
       "tests/**",
+      "mini-golf/tests/**",
       "server.js",
       "package.json",
       "package-lock.json",
       "codex-integration/**",
+      "plugins/**",
       "README.md"
     ]
   },

@@ -337,7 +337,8 @@ canvas#game {
 }
 
 .mute-btn,
-.trophy-btn {
+.trophy-btn,
+.arcade-btn {
   position: absolute;
   bottom: 10px;
   pointer-events: auto;
@@ -349,6 +350,10 @@ canvas#game {
   font-size: 15px;
   cursor: pointer;
   color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .mute-btn {
@@ -359,8 +364,13 @@ canvas#game {
   right: 50px;
 }
 
+.arcade-btn {
+  right: 90px;
+}
+
 .mute-btn:focus-visible,
-.trophy-btn:focus-visible {
+.trophy-btn:focus-visible,
+.arcade-btn:focus-visible {
   outline: 2px solid var(--accent);
 }
 

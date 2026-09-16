@@ -1,6 +1,6 @@
 {
   "name": "ship-it",
-  "description": "A tiny one-button developer arcade game to play while Claude works.",
+  "description": "A tiny arcade — two developer games to play while Claude works.",
   "owner": {
     "name": "Alexander Bouzi",
     "url": "https://github.com/mrbooz"
@@ -9,18 +9,18 @@
     {
       "name": "ship-it",
       "source": "./",
-      "description": "SHIP IT — a tiny one-button developer arcade game to play while Claude works. Your agent codes. You survive production.",
-      "version": "1.0.0",
+      "description": "A tiny arcade: SHIP IT (one-button developer runner) and MERGE CONFLICT MINI GOLF (developer mini golf) to play while Claude works.",
+      "version": "1.1.0",
       "author": {
         "name": "Alexander Bouzi",
         "email": "mrbooz@users.noreply.github.com"
       },
-      "homepage": "https://ship-it-prod-2026.web.app",
+      "homepage": "https://ship-it-prod-2026.web.app/arcade/",
       "repository": "https://github.com/mrbooz/ship-it",
       "license": "MIT",
       "category": "fun",
-      "tags": ["game", "break", "arcade"],
-      "keywords": ["game", "arcade", "endless runner", "break", "waiting", "one-button"]
+      "tags": ["game", "break", "arcade", "mini golf"],
+      "keywords": ["game", "arcade", "endless runner", "mini golf", "break", "waiting", "one-button"]
     }
   ]
 }
