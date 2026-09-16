@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>SHIP IT — Your agent codes. You survive production.</title>
+  <meta name="description" content="A tiny one-button developer arcade game. Jump the bugs, ship the releases." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="stage" id="stage">
+      <canvas id="game" aria-hidden="true"></canvas>
+
+      <div class="hud" aria-hidden="true">
+        <div class="hud-brand">SHIP IT</div>
+        <div class="hud-stats">
+          <div class="stat"><span class="stat-label">SCORE</span><span class="stat-value" id="stat-score">0</span></div>
+          <div class="stat"><span class="stat-label">BEST</span><span class="stat-value" id="stat-best">0</span></div>
+          <div class="stat"><span class="stat-label">RELEASE</span><span class="stat-value" id="stat-release">0</span></div>
+        </div>
+      </div>
+
+      <div class="popup-layer" aria-hidden="true">
+        <div class="popup" id="popup"></div>
+        <div class="flow-banner" id="flow-banner">🔥 FLOW STATE</div>
+      </div>
+
+      <div class="deploy-toast" id="deploy-toast" aria-hidden="true">
+        <span id="deploy-text"></span>
+      </div>
+
+      <section class="screen screen-ready" id="screen-ready">
+        <h1 class="title">SHIP IT</h1>
+        <p class="tagline">Your agent codes. You survive production.</p>
+        <p class="prompt">Press <kbd>SPACE</kbd> or tap to start</p>
+        <p class="hint">Jump the bugs. Chain PERFECT clears. Ship releases.</p>
+      </section>
+
+      <section class="screen screen-gameover" id="screen-gameover" hidden>
+        <h1 class="title fail">BUILD FAILED</h1>
+        <div class="stats-grid">
+          <div><span class="g-label">SCORE</span><span class="g-value" id="go-score">0</span></div>
+          <div><span class="g-label">BEST</span><span class="g-value" id="go-best">0</span></div>
+          <div><span class="g-label">RELEASES</span><span class="g-value" id="go-releases">0</span></div>
+          <div><span class="g-label">BEST COMBO</span><span class="g-value" id="go-combo">0</span></div>
+        </div>
+        <p class="new-best" id="go-newbest" hidden>★ NEW BEST SCORE</p>
+        <p class="lb-status" id="lb-submit-status"></p>
+        <button class="rebuild-btn" id="rebuild-btn">REBUILD</button>
+        <p class="hint">SPACE / tap also rebuilds</p>
+      </section>
+
+      <section class="screen screen-leaderboard" id="screen-leaderboard" hidden>
+        <h1 class="title lb-title">🏆 GLOBAL LEADERBOARD</h1>
+        <ol class="lb-list" id="lb-list"><li class="lb-empty">Loading…</li></ol>
+        <div class="lb-name-row">
+          <label class="lb-name-label" for="lb-name-input">Playing as</label>
+          <input class="lb-name-input" id="lb-name-input" type="text" maxlength="20" autocomplete="off" />
+          <button class="lb-save-btn" id="lb-save-btn" type="button">Save</button>
+        </div>
+        <button class="rebuild-btn lb-close-btn" id="lb-close-btn" type="button">CLOSE</button>
+      </section>
+
+      <button class="trophy-btn" id="trophy-btn" type="button" aria-label="View global leaderboard">🏆</button>
+      <button class="mute-btn" id="mute-btn" type="button" aria-pressed="false" aria-label="Toggle sound">🔊</button>
+
+      <div class="sr-only" role="status" aria-live="polite" id="sr-status"></div>
+    </div>
+    <p class="footer-note">Built for the wait between Codex runs. No account, no network calls, no tracking.</p>
+  </main>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "ship-it",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SHIP IT — a tiny one-button developer arcade game. Your agent codes. You survive production.",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

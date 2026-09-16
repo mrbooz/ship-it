@@ -1,0 +1,510 @@
+:root {
+  --bg: #05070a;
+  --panel: #0b0f14;
+  --ink: #e8f3ee;
+  --ink-dim: #7d8b96;
+  --accent: #2ecc9c;
+  --accent-soft: rgba(46, 204, 156, 0.16);
+  --danger: #ff6b6b;
+  --flow: #ffd166;
+  --border: #1c2530;
+  --mono: "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+}
+
+/*
+ * SHIP IT is deliberately dark-only: the canvas world (terminal green on
+ * near-black, per render.js's COLORS) is a fixed art style, not a themed
+ * one. A light-mode DOM overlay on top of that fixed-dark canvas would
+ * mismatch badly (light text over a dark canvas, or vice versa), so the
+ * whole page commits to one look instead of half-following the OS theme.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.page {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 960 / 320;
+  /* On very narrow screens a strict 3:1 box gets too short to be readable
+     (obstacles cramped, overlay text squeezed) — a floor height trades a
+     little aspect-ratio purity for a genuinely playable small panel. */
+  min-height: 240px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  outline: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Every clamp() below sizes off the STAGE's own width (cqw), not the
+     page viewport (vw) — required for the game to look right when it's
+     embedded in a panel narrower than the browser window. */
+  container-type: inline-size;
+}
+
+.stage:focus-visible {
+  box-shadow: 0 0 0 3px var(--accent);
+}
+
+canvas#game {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: clamp(6px, 2cqw, 14px) clamp(10px, 3cqw, 18px);
+  pointer-events: none;
+}
+
+.hud-brand {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: clamp(11px, 2.4cqw, 14px);
+  color: var(--ink-dim);
+}
+
+.hud-stats {
+  display: flex;
+  gap: clamp(10px, 3cqw, 22px);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.15;
+}
+
+.stat-label {
+  font-size: clamp(8px, 1.6cqw, 10px);
+  color: var(--ink-dim);
+  letter-spacing: 0.1em;
+}
+
+.stat-value {
+  font-size: clamp(13px, 3.2cqw, 20px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.popup-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: clamp(30px, 12cqw, 60px);
+  pointer-events: none;
+}
+
+.popup {
+  font-weight: 700;
+  font-size: clamp(13px, 3cqw, 18px);
+  color: var(--flow);
+  opacity: 0;
+  transform: translateY(0);
+}
+
+.popup.show {
+  animation: popup-pop 0.6s ease-out forwards;
+}
+
+@keyframes popup-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px) scale(1);
+  }
+}
+
+.flow-banner {
+  margin-top: 6px;
+  font-weight: 800;
+  font-size: clamp(12px, 2.8cqw, 16px);
+  letter-spacing: 0.06em;
+  color: var(--flow);
+  opacity: 0;
+  text-shadow: 0 0 12px rgba(255, 209, 102, 0.6);
+}
+
+.flow-banner.show {
+  animation: flow-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes flow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.deploy-toast {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: rgba(5, 8, 10, 0.72);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-weight: 800;
+  font-size: clamp(14px, 3.4cqw, 22px);
+  letter-spacing: 0.04em;
+  padding: 10px 22px;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.deploy-toast.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.screen[hidden] {
+  display: none;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* If content is still taller than the box (very short custom embeds),
+     degrade to top-aligned + scrollable instead of centering into an
+     unreachable overflow — "safe center" falls back to plain center on
+     browsers that don't support it. */
+  justify-content: safe center;
+  gap: 8px;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(5, 8, 10, 0.82), rgba(5, 8, 10, 0.94));
+  padding: 10px 16px;
+  overflow-y: auto;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(28px, 8cqw, 46px);
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-shadow: 0 0 24px var(--accent-soft);
+  line-height: 1.1;
+}
+
+.title.fail {
+  /* The game-over screen packs a title, a 4-stat grid, status lines and a
+     button into the same short 3:1 box — a smaller title keeps all of it
+     visible instead of clipping against the stage's rounded edge. */
+  font-size: clamp(20px, 6cqw, 32px);
+  color: var(--danger);
+  text-shadow: 0 0 24px rgba(255, 107, 107, 0.35);
+}
+
+.tagline {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: clamp(11px, 2.6cqw, 14px);
+}
+
+.prompt {
+  margin: 6px 0 0;
+  font-size: clamp(12px, 2.8cqw, 15px);
+}
+
+.prompt kbd {
+  background: var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: var(--mono);
+}
+
+.hint {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: clamp(10px, 2.2cqw, 12px);
+}
+
+.screen-gameover {
+  gap: 3px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 28px;
+  margin: 4px 0;
+}
+
+.stats-grid > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.g-label {
+  font-size: clamp(9px, 2cqw, 11px);
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+}
+
+.g-value {
+  font-size: clamp(16px, 4cqw, 22px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.new-best {
+  margin: 0;
+  color: var(--flow);
+  font-weight: 700;
+  font-size: clamp(11px, 2.4cqw, 13px);
+}
+
+.rebuild-btn {
+  pointer-events: auto;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-weight: 800;
+  font-size: clamp(13px, 3cqw, 16px);
+  letter-spacing: 0.06em;
+  color: #05100b;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  cursor: pointer;
+}
+
+.rebuild-btn:focus-visible {
+  outline: 3px solid var(--flow);
+  outline-offset: 2px;
+}
+
+.mute-btn,
+.trophy-btn {
+  position: absolute;
+  bottom: 10px;
+  pointer-events: auto;
+  background: rgba(5, 8, 10, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  font-size: 15px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.mute-btn {
+  right: 10px;
+}
+
+.trophy-btn {
+  right: 50px;
+}
+
+.mute-btn:focus-visible,
+.trophy-btn:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.lb-status {
+  margin: 2px 0 0;
+  min-height: 1.2em;
+  font-size: clamp(10px, 2.2cqw, 12px);
+  color: var(--accent);
+}
+
+.screen-leaderboard {
+  gap: 10px;
+  padding: 20px 16px;
+}
+
+.lb-title {
+  font-size: clamp(16px, 4.4cqw, 22px);
+  margin-bottom: 2px;
+}
+
+.lb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: min(100%, 380px);
+  max-height: min(46vh, 220px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: clamp(11px, 2.6cqw, 13px);
+}
+
+.lb-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(46, 204, 156, 0.06);
+}
+
+.lb-list li:nth-child(1) {
+  color: var(--flow);
+  font-weight: 800;
+}
+
+.lb-rank {
+  color: var(--ink-dim);
+  width: 2em;
+  flex: none;
+}
+
+.lb-name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-score {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.lb-empty {
+  color: var(--ink-dim);
+  justify-content: center;
+  background: none;
+}
+
+.lb-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.lb-name-label {
+  font-size: clamp(9px, 2cqw, 11px);
+  color: var(--ink-dim);
+}
+
+.lb-name-input {
+  font-family: var(--mono);
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: clamp(11px, 2.4cqw, 13px);
+  width: 140px;
+  max-width: 40cqw;
+}
+
+.lb-name-input:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.lb-save-btn {
+  pointer-events: auto;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: clamp(10px, 2.2cqw, 12px);
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.lb-close-btn {
+  margin-top: 4px;
+  background: var(--border);
+  color: var(--ink);
+}
+
+.footer-note {
+  color: var(--ink-dim);
+  font-size: 11px;
+  text-align: center;
+  margin: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup.show,
+  .flow-banner.show {
+    animation: none;
+    opacity: 1;
+  }
+  .deploy-toast {
+    transition: none;
+  }
+}

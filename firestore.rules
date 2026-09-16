@@ -1,0 +1,31 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public, append-only leaderboard. Anyone can read; a create must be a
+    // well-formed score row with a real server timestamp; no client may
+    // ever edit or delete an existing entry (keeps other players' scores
+    // tamper-proof even though there is no login system).
+    match /scores/{scoreId} {
+      allow read: if true;
+
+      allow create: if
+        request.resource.data.keys().hasOnly(['name', 'score', 'releases', 'bestCombo', 'createdAt']) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() > 0 &&
+        request.resource.data.name.size() <= 20 &&
+        request.resource.data.score is number &&
+        request.resource.data.score >= 0 &&
+        request.resource.data.score <= 2000000 &&
+        request.resource.data.releases is number &&
+        request.resource.data.releases >= 0 &&
+        request.resource.data.releases <= 5000 &&
+        request.resource.data.bestCombo is number &&
+        request.resource.data.bestCombo >= 0 &&
+        request.resource.data.bestCombo <= 5000 &&
+        request.resource.data.createdAt == request.time;
+
+      allow update, delete: if false;
+    }
+  }
+}
