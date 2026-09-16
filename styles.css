@@ -489,6 +489,15 @@ canvas#game {
   margin: 0;
 }
 
+.footer-note a {
+  color: var(--accent);
+}
+
+.footer-note a:hover,
+.footer-note a:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
