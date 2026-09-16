@@ -1,0 +1,29 @@
+{
+  "name": "ship-it",
+  "description": "A tiny one-button developer arcade game to play while Claude works.",
+  "owner": {
+    "name": "Alexander Bouzi",
+    "url": "https://github.com/mrbooz"
+  },
+  "plugins": [
+    {
+      "name": "ship-it",
+      "source": {
+        "source": "github",
+        "repo": "mrbooz/ship-it"
+      },
+      "description": "SHIP IT — a tiny one-button developer arcade game to play while Claude works. Your agent codes. You survive production.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Alexander Bouzi",
+        "email": "mrbooz@users.noreply.github.com"
+      },
+      "homepage": "https://ship-it-prod-2026.web.app",
+      "repository": "https://github.com/mrbooz/ship-it",
+      "license": "MIT",
+      "category": "fun",
+      "tags": ["game", "break", "arcade"],
+      "keywords": ["game", "arcade", "endless runner", "break", "waiting", "one-button"]
+    }
+  ]
+}

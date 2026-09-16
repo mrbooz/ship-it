@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "ship-it",
+  "version": "1.0.0",
+  "description": "SHIP IT — a tiny one-button developer arcade game to play while Claude works. Your agent codes. You survive production.",
+  "author": {
+    "name": "Alexander Bouzi",
+    "email": "mrbooz@users.noreply.github.com"
+  },
+  "homepage": "https://ship-it-prod-2026.web.app",
+  "repository": "https://github.com/mrbooz/ship-it",
+  "license": "MIT",
+  "keywords": ["game", "arcade", "endless runner", "break", "waiting", "one-button"],
+  "skills": [
+    "./"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "ship-it",
+  "interface": {
+    "displayName": "Ship It"
+  },
+  "plugins": [
+    {
+      "name": "ship-it",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ship-it"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Games"
+    }
+  ]
+}

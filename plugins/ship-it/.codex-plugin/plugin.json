@@ -1,0 +1,36 @@
+{
+  "name": "ship-it",
+  "version": "1.0.0+codex.20260916011137",
+  "description": "SHIP IT \u2014 a tiny one-button developer arcade game to play while Codex works. Your agent codes. You survive production.",
+  "author": {
+    "name": "Alexander Bouzi"
+  },
+  "homepage": "https://ship-it-prod-2026.web.app",
+  "repository": "https://ship-it-prod-2026.web.app",
+  "license": "MIT",
+  "keywords": [
+    "game",
+    "arcade",
+    "endless runner",
+    "break",
+    "waiting",
+    "one-button"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ship It",
+    "shortDescription": "A tiny arcade game for while Codex works",
+    "longDescription": "SHIP IT is a one-button endless runner themed around shipping software: jump BUG, 404, MERGE CONFLICT and other developer disasters, chain PERFECT jumps into FLOW STATE, and rack up deployments. Meant to be opened for a couple of minutes while a longer Codex task runs, then closed again. Runs entirely in the browser at ship-it-prod-2026.web.app; local high score is stored on your device, and the global leaderboard is public (no account needed).",
+    "developerName": "Alexander Bouzi",
+    "category": "Games",
+    "capabilities": [
+      "Interactive"
+    ],
+    "brandColor": "#2ecc9c",
+    "defaultPrompt": [
+      "Open SHIP IT so I can play while you work",
+      "Launch the SHIP IT arcade game",
+      "Give me the SHIP IT link"
+    ]
+  }
+}
