@@ -8,10 +8,7 @@
   "plugins": [
     {
       "name": "ship-it",
-      "source": {
-        "source": "github",
-        "repo": "mrbooz/ship-it"
-      },
+      "source": "./",
       "description": "SHIP IT — a tiny one-button developer arcade game to play while Claude works. Your agent codes. You survive production.",
       "version": "1.0.0",
       "author": {
