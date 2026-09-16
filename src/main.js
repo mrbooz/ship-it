@@ -120,6 +120,11 @@ async function submitToLeaderboard(stats) {
 
 async function renderLeaderboard() {
   el.lbList.innerHTML = `<li class="lb-empty">Loading…</li>`;
+  const ready = await leaderboard.readyPromise;
+  if (!ready) {
+    el.lbList.innerHTML = `<li class="lb-empty">Leaderboard unavailable here (offline or blocked). Local best still works.</li>`;
+    return;
+  }
   const top = await leaderboard.fetchTop(10);
   if (top.length === 0) {
     el.lbList.innerHTML = `<li class="lb-empty">No scores yet — be the first to ship.</li>`;
