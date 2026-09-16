@@ -27,6 +27,8 @@
       "Interactive"
     ],
     "brandColor": "#2ecc9c",
+    "composerIcon": "./assets/logo.svg",
+    "logo": "./assets/logo.svg",
     "defaultPrompt": [
       "Open SHIP IT so I can play while you work",
       "Launch the SHIP IT arcade game",
