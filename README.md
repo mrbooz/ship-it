@@ -8,6 +8,28 @@ Chain PERFECT clears into FLOW STATE. Ship releases. Try to beat your best.
 
 Play it live: **https://ship-it-prod-2026.web.app**
 
+## Install as a plugin
+
+**Claude Code:**
+```
+/plugin marketplace add mrbooz/ship-it
+/plugin install ship-it@ship-it
+```
+Then start a new session and ask Claude to "open Ship It."
+
+**Codex** (via the ChatGPT desktop app):
+```
+codex plugin marketplace add mrbooz/ship-it
+```
+Then start a new thread and ask it to "open Ship It." (No `codex` CLI on
+your machine? Open the ChatGPT app → Plugins tab → Personal, once your
+personal marketplace has been pointed at this repo the same way.)
+
+Either way, the plugin just opens the live URL above in your browser —
+there's no deeper integration, and the game works identically with or
+without it. See [`codex-integration/NOTES.md`](codex-integration/NOTES.md)
+for exactly what is and isn't possible here.
+
 ## What it is
 
 An endless runner where your character auto-runs through a software
